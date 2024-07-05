@@ -1,39 +1,33 @@
 package com.example.taskmanager.network
 
-import com.example.taskmanager.data.ToDoTaskResponse
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import com.example.taskmanager.model.Task
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 
-interface ToDoService {
-    @GET("task")
-    suspend fun searchPhotos(
-        @Query("name") name: String,
-        @Query("content") content: String,
-        @Query("per_page") perPage: Int
-    ): ToDoTaskResponse
+private const val BASE_URL =
+    "https://android-kotlin-fun-mars-server.appspot.com"
 
+
+private val retrofit = Retrofit.Builder()
+    .addConverterFactory(GsonConverterFactory.create())
+    .baseUrl(BASE_URL)
+    .build()
+
+/**
+ * Retrofit service object for creating api calls
+ */
+interface ToDoTaskApiService {
+    @GET("tasks")
+    suspend fun getTasks(): List<Task>
 }
 
-object MangeTaskApi{
-    private const val BASE_URL = "https://api.unsplash.com/"
-
-    fun create(): ToDoService {
-        val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logger)
-            .build()
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ToDoService::class.java)
+/**
+ * A public Api object that exposes the lazy-initialized Retrofit service
+ */
+object TaskManagerApi {
+    val retrofitService: ToDoTaskApiService by lazy {
+        retrofit.create(ToDoTaskApiService::class.java)
     }
 }

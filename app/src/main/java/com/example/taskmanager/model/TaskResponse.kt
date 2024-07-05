@@ -1,7 +1,7 @@
-package com.example.taskmanager.data
+package com.example.taskmanager.model
 import com.google.gson.annotations.SerializedName
 
-data class ToDoTaskResponse(
+data class Task(
     @SerializedName("name")
     val totalPages: String,
     @SerializedName("content")
