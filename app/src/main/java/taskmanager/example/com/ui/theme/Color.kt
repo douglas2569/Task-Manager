@@ -1,4 +1,4 @@
-package crud.example.com.ui.theme
+package taskmanager.example.com.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
