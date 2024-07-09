@@ -1,14 +1,18 @@
 package taskmanager.example.com.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.Flow
+import taskmanager.example.com.database.entities.TaskEntity
 import taskmanager.example.com.models.TaskModel
-import taskmanager.example.com.repositories.TaskRepository
+import taskmanager.example.com.repositories.TaskRepositoryImpl
 
 class HomeViewModel(
-    private val repository: TaskRepository
+    private val repository: TaskRepositoryImpl
 ) : ViewModel() {
 
-    val getAll get() = repository.getAll.toString()
+    suspend fun getAll(): Flow<List<TaskEntity>> {
+        return repository.getAll()
+    }
 
     suspend fun insert(
         title: String,
@@ -25,4 +29,5 @@ class HomeViewModel(
             )
         )
     }
+
 }

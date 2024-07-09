@@ -5,19 +5,30 @@ import taskmanager.example.com.database.entities.TaskEntity
 import taskmanager.example.com.models.TaskModel
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 
-class TaskRepository(private val dao: TaskDao) {
-    val getAll get() = dao.findAll()
+interface TaskRepository {
+    suspend fun getAll(): Flow<List<TaskEntity>>
+    suspend fun getById(id: String)
+    suspend fun insert(task: TaskModel)
+    suspend fun delete(id: String)
+}
 
-    fun getById(id: String){
+class TaskRepositoryImpl(private val dao: TaskDao): TaskRepository {
+
+    override suspend fun getAll(): Flow<List<TaskEntity>> {
+        return dao.findAll()
+    }
+
+    override suspend fun getById(id: String){
         dao.getById(id)
     }
 
-    suspend fun insert(todo: TaskModel) = withContext(IO) {
-        dao.insert(todo.toEntity())
+    override suspend fun insert(task: TaskModel) = withContext(IO) {
+        dao.insert(task.toEntity())
     }
 
-    suspend fun delete(id: String) = withContext(IO){
+    override suspend fun delete(id: String) = withContext(IO){
         dao.delete(id)
     }
 }

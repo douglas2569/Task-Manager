@@ -6,11 +6,12 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import taskmanager.example.com.database.TaskManagerDatabase
-import taskmanager.example.com.repositories.TaskRepository
+import taskmanager.example.com.repositories.TaskRepositoryImpl
+import taskmanager.example.com.ui.viewmodels.HomeViewModel
 
 val appModule = module {
-    singleOf(::TaskRepository)
-    //viewModelOf(::HomeViewModel)
+    singleOf(::TaskRepositoryImpl)
+    viewModelOf(::HomeViewModel)
 }
 
 val storageModule = module {
@@ -18,7 +19,7 @@ val storageModule = module {
         Room.databaseBuilder(
             androidContext(),
             TaskManagerDatabase::class.java, "taskmanager_database.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
     single { get<TaskManagerDatabase>().taskDao() }
 }
