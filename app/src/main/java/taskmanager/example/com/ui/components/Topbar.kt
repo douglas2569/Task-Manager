@@ -11,21 +11,26 @@ import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Topbar(scrollBehavior: TopAppBarScrollBehavior, scope: CoroutineScope, navController: NavController) {
+fun Topbar(
+           scrollBehavior: TopAppBarScrollBehavior,
+           scope: CoroutineScope,
+           navController: NavController
+) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black,
-            titleContentColor = Color.White,
+            containerColor = Color.White,
+            titleContentColor = Color.Black,
         ),
         title = {
-            ButtonTopbar("Home") { navController.navigate("home") }
+            TopbarButton("") { navController.navigate("home") }
         },
         navigationIcon = {
-            ButtonTopbar("Home") { navController.navigate("home") }
+
         },
         actions = {
-            ButtonTopbar("Home") { navController.navigate("home") }
+
         },
         scrollBehavior = scrollBehavior,
     )
 }
+

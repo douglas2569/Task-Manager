@@ -84,14 +84,5 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.4.0")
     implementation("io.insert-koin:koin-androidx-compose:3.4.0")
 
-//    // Retrofit
-//    implementation(libs.retrofit)
-//    implementation(libs.retrofit2.kotlin.coroutines.adapter)
-
-//    //Gson
-//    implementation(libs.converter.gson)
-
-//    // Serialization
-//    implementation(libs.kotlinx.serialization.json)
-//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+//
 }

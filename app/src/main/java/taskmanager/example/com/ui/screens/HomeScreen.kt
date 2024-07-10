@@ -1,12 +1,18 @@
 package taskmanager.example.com.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import taskmanager.example.com.ui.components.TopbarButton
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen( navController: NavController){
+
+    Column {
+
+    }
     //navController.navigate("update/1")
 }
 
