@@ -25,48 +25,36 @@ import taskmanager.example.com.ui.screens.UpdateTaskScreen
 @Composable
 fun TaskManagerApp() {
     val navController = rememberNavController()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val scope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = { Topbar(scrollBehavior, scope, navController) },
-        content = {
-            paddingValues ->
-                Column {
+     NavHost(navController = navController, startDestination = "home") {
 
-                    NavHost(navController = navController, startDestination = "home") {
+           composable("home") {
+                HomeScreen(
+                    navController
+                )
+           }
 
-                        composable("home") {
-                            HomeScreen(
-                                navController
-                            )
-                        }
+            composable("create") {
+                CreateTaskScreen(
+                    navController
+                )
+            }
 
-                        composable("create") {
-                            CreateTaskScreen(
-                                navController
-                            )
-                        }
-                        composable("update/{taskId}") { backstackEntry ->
-                            backstackEntry.arguments?.getString("taskId")
-                                ?.let { taskId ->
-                                    UpdateTaskScreen(
-                                        taskId.toInt()
-                                    )
-                                }
-
-                        }
-
-                        composable("delete/{taskId}") { backstackEntry ->
-                            backstackEntry.arguments?.getString("taskId")?.toInt()
-                        }
+            composable("update/{taskId}") { backstackEntry ->
+                backstackEntry.arguments?.getString("taskId")
+                    ?.let { taskId ->
+                        UpdateTaskScreen(
+                            taskId.toInt(),
+                            navController
+                        )
                     }
 
-                }
-        },
-        bottomBar = {
-            Bottombar("", {})
-        }
-    )
+            }
+
+            composable("delete/{taskId}") { backstackEntry ->
+                backstackEntry.arguments?.getString("taskId")?.toInt()
+            }
+     }
 
 }
+

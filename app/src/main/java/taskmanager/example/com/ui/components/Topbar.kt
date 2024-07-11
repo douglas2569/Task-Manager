@@ -6,15 +6,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavController
-import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Topbar(
-           scrollBehavior: TopAppBarScrollBehavior,
-           scope: CoroutineScope,
-           navController: NavController
+   leftButton: @Composable () -> Unit,
+   centerButton: @Composable () -> Unit,
+   rightButton: @Composable () -> Unit,
+   scrollBehavior: TopAppBarScrollBehavior,
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -22,13 +21,14 @@ fun Topbar(
             titleContentColor = Color.Black,
         ),
         title = {
-            TopbarButton("") { navController.navigate("home") }
+            centerButton()
+
         },
         navigationIcon = {
-
+            leftButton()
         },
         actions = {
-
+            rightButton()
         },
         scrollBehavior = scrollBehavior,
     )
