@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import taskmanager.example.com.ui.components.Bottombar
 import taskmanager.example.com.ui.components.Topbar
@@ -25,9 +27,9 @@ fun UpdateTaskScreen(
     Scaffold(
         topBar = {
             Topbar(
-                { TopbarButton("Cancel", {}) },
-                { TopbarButton("New Task", {}) },
-                { TopbarButton("Clear", {}) },
+                { TopbarButton("Cancelar", {}) },
+                { Text(text = "Atualizar Task", fontSize = 20.sp, fontWeight = FontWeight.W400) },
+                { TopbarButton("Limpar", {}) },
                 scrollBehavior)
         },
         content = {
@@ -37,7 +39,7 @@ fun UpdateTaskScreen(
             }
         },
         bottomBar = {
-            Bottombar("Save", {  })
+            Bottombar("Salvar", {  })
         }
     )
 

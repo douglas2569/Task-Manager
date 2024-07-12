@@ -11,6 +11,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun TaskStatusControlButtons(
@@ -20,26 +21,25 @@ fun TaskStatusControlButtons(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
         TextButton(
             onClick = { onClickPending() }
         ) {
-            Text("Pending")
+            Text("Pendentes", fontSize = 14.sp)
         }
 
         TextButton(
             onClick = { onClickInProcess() }
         ) {
-            Text("In Process")
+            Text("Em processo", fontSize = 14.sp)
         }
 
         TextButton(
             onClick = { onClickFinished() }
         ) {
-            Text("Finished")
+            Text("Concluidos", fontSize = 14.sp)
         }
 
 

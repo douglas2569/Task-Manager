@@ -2,7 +2,6 @@ package taskmanager.example.com.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.UUID
 
 @Entity
 data class TaskEntity (
@@ -10,6 +9,7 @@ data class TaskEntity (
     val id: Int = 0,
     val title: String,
     val description: String,
-    val data: Int,
-    val status: String
+    val status: String,
+    val time: String,
+    val data: String
 )

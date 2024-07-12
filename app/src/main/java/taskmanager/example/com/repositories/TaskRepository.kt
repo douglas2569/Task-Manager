@@ -8,20 +8,25 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
-    suspend fun getAll(): Flow<List<TaskEntity>>
+    suspend fun getAll(): List<TaskEntity>
     suspend fun getById(id: String)
+    suspend fun getAllByStatus(status: String):List<TaskEntity>
     suspend fun insert(task: TaskModel)
     suspend fun delete(id: String)
 }
 
 class TaskRepositoryImpl(private val dao: TaskDao): TaskRepository {
 
-    override suspend fun getAll(): Flow<List<TaskEntity>> {
+    override suspend fun getAll():List<TaskEntity> {
         return dao.findAll()
     }
 
     override suspend fun getById(id: String){
         dao.getById(id)
+    }
+
+    override suspend fun getAllByStatus(status: String): List<TaskEntity>{
+        return dao.getAllByStatus(status)
     }
 
     override suspend fun insert(task: TaskModel) = withContext(IO) {
@@ -31,12 +36,19 @@ class TaskRepositoryImpl(private val dao: TaskDao): TaskRepository {
     override suspend fun delete(id: String) = withContext(IO){
         dao.delete(id)
     }
+
+    suspend fun deleteAll() = withContext(IO){
+        dao.deleteAll()
+    }
+
 }
 
 fun TaskModel.toEntity() = TaskEntity(
     id = this.id,
     title = this.title,
     description = this.description,
+    status = this.status,
+    time = this.time,
     data = this.data,
-    status = this.status
+
 )
