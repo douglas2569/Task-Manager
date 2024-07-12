@@ -14,6 +14,7 @@ val BluePrimary = Color(0xFF006FFD)
 val BlueSecondary = Color(0xFFEAF2FF)
 val BlueTertiary = Color(0xFFF2F6FF)
 
+
 val TextPrimary = Color(0xFF1F2024)
 val TextSecondary = Color(0xFF71727A)
 val TextTertiary = Color(0xFFFFFFFF)

@@ -24,6 +24,7 @@ class HomeViewModel(
     private val _tasks = MutableLiveData<List<TaskEntity>>()
     val tasks: LiveData<List<TaskEntity>> = _tasks
 
+
     init {
         getAllByStatus("pending")
     }
@@ -46,26 +47,26 @@ class HomeViewModel(
         }
     }
 
-    fun insert(
-        title: String,
-        description: String,
-        data: String,
-        time: String,
-        status: String
-    ) {
-        viewModelScope.launch {
-            repository.insert(
-                TaskModel(
-                    title = title,
-                    description = description,
-                    data = data,
-                    time = time,
-                    status = status
-                )
-            )
-            getAllByStatus(status)
-        }
-    }
+//    fun insert(
+//        title: String,
+//        description: String,
+//        data: String,
+//        time: String,
+//        status: String
+//    ) {
+//        viewModelScope.launch {
+//            repository.insert(
+//                TaskModel(
+//                    title = title,
+//                    description = description,
+//                    data = data,
+//                    time = time,
+//                    status = status
+//                )
+//            )
+//            getAllByStatus(status)
+//        }
+//    }
 
 
 

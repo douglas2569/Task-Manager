@@ -14,7 +14,7 @@ import taskmanager.example.com.ui.screens.UpdateTaskScreen
 fun TaskManagerApp() {
     val navController = rememberNavController()
 
-     NavHost(navController = navController, startDestination = "home") {
+     NavHost(navController = navController, startDestination = "create") {
 
            composable("home") {
                 HomeScreen(

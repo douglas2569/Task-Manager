@@ -6,7 +6,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ActionButton(text: String, onClick:()-> Unit) {
@@ -16,6 +19,6 @@ fun ActionButton(text: String, onClick:()-> Unit) {
         onClick = { onClick() },
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text(text)
+        Text(text = text, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.W600)
     }
 }
