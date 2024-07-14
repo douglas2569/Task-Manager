@@ -1,5 +1,6 @@
 package taskmanager.example.com.ui.components
 
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,22 +22,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import taskmanager.example.com.ui.viewmodels.HomeViewModel
+
 
 @Composable
-fun ItemTask(title:String,description: String, status: String, date: String, time: String ){
+fun ItemTask(id:Int, title:String,description: String, status: String, date: String, time: String,  viewModel:HomeViewModel, navController:NavController){
     var isOpen by remember { mutableStateOf(false) }
     val changeOpenButton = { isOpen = !isOpen }
 
     if (isOpen) {
-        BodyTask(title, description, status, date, time,  changeOpenButton)
+        BodyTask(id, title, description, status, date, time,  viewModel, navController, changeOpenButton)
     }else{
         HeadTask(title, changeOpenButton)
     }
-
 }
 
 @Composable
-fun HeadTask(title: String, changeOpenButton: () -> Unit){
+fun HeadTask(title: String, changeOpenButton:()->Unit){
     Row(
         modifier = Modifier
             .clickable { changeOpenButton() }
@@ -53,7 +56,17 @@ fun HeadTask(title: String, changeOpenButton: () -> Unit){
 }
 
 @Composable
-fun BodyTask(title: String, description: String, status: String, date: String, time: String, changeOpenButton: () -> Unit){
+fun BodyTask(id:Int,
+             title: String,
+             description: String,
+             status: String,
+             date: String,
+             time: String,
+             viewModel:HomeViewModel,
+             navController:NavController,
+             changeOpenButton:()->Unit
+){
+
     Column(modifier = Modifier
         .padding(vertical = 8.dp)
         .fillMaxWidth()
@@ -116,10 +129,13 @@ fun BodyTask(title: String, description: String, status: String, date: String, t
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
             Text(text = "")
             Row() {
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = { navController.navigate("update/${id}")}) {
                     Text(text = "ALTERAR")
                 }
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {
+                    viewModel.deleteById(id)
+                    viewModel.getAllByStatus(status)
+                }) {
                     Text(text = "DELETAR")
                 }
             }

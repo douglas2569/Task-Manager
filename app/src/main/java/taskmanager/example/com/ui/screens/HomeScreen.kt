@@ -86,7 +86,7 @@ fun HomeScreen( navController: NavController){
                         3 -> viewModel.getAllByStatus("3")
                     }
 
-                    ListTasks(viewModel.selectedItem, tasks)
+                    ListTasks(viewModel.selectedItem, tasks, viewModel, navController)
 
 
                 }
@@ -108,8 +108,10 @@ fun NoTasksMessage(title:String, description: String){
     Text(text = description)
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun ListTasks(status:Int, tasks: List<TaskEntity>){
+fun ListTasks(status:Int, tasks: List<TaskEntity>, viewModel:HomeViewModel, navController:NavController){
+
     if (tasks.isEmpty()) {
         when (status) {
             1 -> NoTasksMessage("Nada aqui por agora", "Aqui que você encontrar seus projetos pendentes")
@@ -138,7 +140,7 @@ fun ListTasks(status:Int, tasks: List<TaskEntity>){
         }
 
         tasks.forEach { task ->
-            ItemTask(task.title, task.description, task.status, task.time, task.data)
+            ItemTask(task.id, task.title, task.description, task.status, task.time, task.data,  viewModel, navController)
         }
     }
 

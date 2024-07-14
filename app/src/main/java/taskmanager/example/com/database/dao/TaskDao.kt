@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import taskmanager.example.com.database.entities.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,16 +14,19 @@ interface TaskDao {
     suspend fun findAll(): List<TaskEntity>
 
     @Query("SELECT * FROM TaskEntity WHERE id = :id")
-    suspend fun getById(id: String): List<TaskEntity>
+    suspend fun getById(id: Int): TaskEntity
 
     @Query("SELECT * FROM TaskEntity WHERE status = :status")
     suspend fun getAllByStatus(status: String): List<TaskEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(todo: TaskEntity)
+    suspend fun insert(task: TaskEntity)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(task: TaskEntity)
 
     @Query("DELETE FROM TaskEntity WHERE id = :id")
-    suspend fun delete(id: String)
+    suspend fun delete(id: Int)
 
     @Query("DELETE FROM TaskEntity")
     suspend fun deleteAll()

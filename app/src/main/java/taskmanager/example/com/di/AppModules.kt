@@ -7,11 +7,15 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import taskmanager.example.com.database.TaskManagerDatabase
 import taskmanager.example.com.repositories.TaskRepositoryImpl
+import taskmanager.example.com.ui.viewmodels.CreateViewModel
 import taskmanager.example.com.ui.viewmodels.HomeViewModel
+import taskmanager.example.com.ui.viewmodels.UpdateViewModel
 
 val appModule = module {
     singleOf(::TaskRepositoryImpl)
     viewModelOf(::HomeViewModel)
+    viewModelOf(::CreateViewModel)
+    viewModelOf(::UpdateViewModel)
 }
 
 val storageModule = module {

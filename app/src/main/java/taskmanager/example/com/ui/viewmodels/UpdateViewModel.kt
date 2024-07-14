@@ -8,19 +8,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import taskmanager.example.com.database.entities.TaskEntity
 import taskmanager.example.com.models.TaskModel
 import taskmanager.example.com.repositories.TaskRepositoryImpl
 
-data class DataTask(
-    var id: Int = 0,
-    var title: String,
-    var description: String,
-    var status: String,
-    var time: String,
-    var data: String
-)
-
-class CreateViewModel(private val repository: TaskRepositoryImpl) : ViewModel() {
+class UpdateViewModel(private val repository: TaskRepositoryImpl) : ViewModel() {
 
     var dataTask by mutableStateOf(DataTask(
         id = 0,
@@ -54,9 +46,35 @@ class CreateViewModel(private val repository: TaskRepositoryImpl) : ViewModel() 
         changeSelectedStatus(listOf(false, false, false))
     }
 
+    fun setData(id:Int) {
+
+        viewModelScope.launch {
+            val task: TaskEntity = repository.getById(id)
+
+            dataTask = DataTask(
+                id = task.id,
+                title = task.title,
+                description = task.description,
+                status = task.status,
+                time = task.time,
+                data = task.data
+            )
+
+            when(task.status){
+                "1" -> changeSelectedStatus(listOf(true, false, false))
+                "2" -> changeSelectedStatus(listOf(false, true, false))
+                "3" -> changeSelectedStatus(listOf(false, false, true))
+            }
+
+        }
 
 
-    fun insert(
+
+
+    }
+
+    fun update(
+        id: Int,
         title: String,
         description: String,
         data: String,
@@ -64,8 +82,9 @@ class CreateViewModel(private val repository: TaskRepositoryImpl) : ViewModel() 
         status: String
     ) {
         viewModelScope.launch {
-            repository.insert(
+            repository.update(
                 TaskModel(
+                    id = id,
                     title = title,
                     description = description,
                     data = data,
