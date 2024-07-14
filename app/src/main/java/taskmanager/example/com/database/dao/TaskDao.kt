@@ -19,6 +19,9 @@ interface TaskDao {
     @Query("SELECT * FROM TaskEntity WHERE status = :status")
     suspend fun getAllByStatus(status: String): List<TaskEntity>
 
+    @Query("SELECT * FROM TaskEntity WHERE status = :status AND (title LIKE '%' || :value || '%' OR description LIKE '%' || :value || '%')")
+    suspend fun getAllByStatusAndTitleOrDescription(status: String, value: String): List<TaskEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity)
 

@@ -50,7 +50,7 @@ android {
     }
 
 }
-
+/*
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -86,4 +86,42 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:3.4.0")
 
 //
+}
+
+ */
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))  // Plataforma Compose BOM para versões compatíveis
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.runtime.livedata)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))  // Plataforma Compose BOM para testes
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+    ksp("androidx.room:room-compiler:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.0")
+
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.insert.koin.koin.android)
+    implementation("io.insert-koin:koin-android:3.4.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.0")
+
+    // Adicionando a dependência do Material3
+    implementation("androidx.compose.material3:material3:1.1.1")
 }

@@ -14,6 +14,7 @@ interface TaskRepository {
     suspend fun insert(task: TaskModel)
     suspend fun deleteById(id: Int)
     suspend fun update(task: TaskModel)
+    suspend fun getAllByStatusAndTitleOrDescription(status: String, value: String): List<TaskEntity>
 }
 
 class TaskRepositoryImpl(private val dao: TaskDao): TaskRepository {
@@ -28,6 +29,10 @@ class TaskRepositoryImpl(private val dao: TaskDao): TaskRepository {
 
     override suspend fun getAllByStatus(status: String): List<TaskEntity>{
         return dao.getAllByStatus(status)
+    }
+
+    override suspend fun getAllByStatusAndTitleOrDescription(status: String, value: String): List<TaskEntity>{
+        return dao.getAllByStatusAndTitleOrDescription(status, value)
     }
 
     override suspend fun insert(task: TaskModel) = withContext(IO) {

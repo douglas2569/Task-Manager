@@ -5,19 +5,26 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,61 +54,75 @@ import taskmanager.example.com.ui.viewmodels.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition", "SuspiciousIndentation")
 @Composable
-fun HomeScreen( navController: NavController){
+fun HomeScreen(navController: NavController) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<HomeViewModel>()
     val tasks by viewModel.tasks.observeAsState(emptyList())
+    val searchValue by viewModel.searchValue.observeAsState("")
 
-        Scaffold(
-            topBar = {
-                Topbar(
-                    { TopbarButton("", {}) },
-                    { Text(text = "Projetos", fontSize = 20.sp, fontWeight = FontWeight.W400) },
-                    { TopbarButton("search", {}) },
-                    scrollBehavior)
-             },
-            content = {
-                    innitPadding ->
+    var visibilitySearch by remember {
+        mutableStateOf(false)
+    }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = innitPadding.calculateTopPadding(),
-                            bottom = innitPadding.calculateBottomPadding(),
-                            start = 18.dp,
-                            end = 18.dp
-                        )
-                        .verticalScroll(rememberScrollState())
+    LaunchedEffect(viewModel.selectedItem) {
+        viewModel.getAllByStatus(viewModel.selectedItem.toString())
+    }
+
+    Scaffold(
+        topBar = {
+            Topbar(
+                { TopbarButton("", {}) },
+                { Text(text = "Projetos", fontSize = 20.sp, fontWeight = FontWeight.W400) },
+                { TopbarButton("Search", { visibilitySearch = !visibilitySearch }) },
+                scrollBehavior
+            )
+        },
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = innerPadding.calculateBottomPadding(),
+                        start = 18.dp,
+                        end = 18.dp
+                    )
+                    .verticalScroll(rememberScrollState())
+            ) {
+                TaskStatusControlButtons(
+                    { viewModel.selectedItem = 1 },
+                    { viewModel.selectedItem = 2 },
+                    { viewModel.selectedItem = 3 },
+                    viewModel
                 )
-                {
-                    TaskStatusControlButtons(
-                        { viewModel.selectedItem = 1 },
-                        { viewModel.selectedItem = 2 },
-                        { viewModel.selectedItem = 3 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                if (visibilitySearch) {
+                    OutlinedTextField(
+                        value = searchValue,
+                        onValueChange = { newValue ->
+                            viewModel.updateSearchValue(newValue)
+                        },
+                        placeholder = { Text("Search") },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
 
-                    when(viewModel.selectedItem){
-                        1 -> viewModel.getAllByStatus("1")
-                        2 -> viewModel.getAllByStatus("2")
-                        3 -> viewModel.getAllByStatus("3")
-                    }
-
-                    ListTasks(viewModel.selectedItem, tasks, viewModel, navController)
-
-
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
+                Spacer(modifier = Modifier.height(8.dp))
 
-            },
-            bottomBar = {
-                Bottombar("Criar Task", { navController.navigate("create") })
+                ListTasks(viewModel.selectedItem, tasks, viewModel, navController)
             }
-        )
-
-
-    //navController.navigate("update/1")
+        },
+        bottomBar = {
+            Bottombar("Criar Task", { navController.navigate("create") })
+        }
+    )
 }
+
 
 @Composable
 fun NoTasksMessage(title:String, description: String){

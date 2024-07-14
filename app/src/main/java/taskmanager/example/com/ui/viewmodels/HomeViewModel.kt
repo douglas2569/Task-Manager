@@ -21,21 +21,22 @@ class HomeViewModel(
     private val repository: TaskRepositoryImpl
 ) : ViewModel() {
 
-    var selectedItem by mutableIntStateOf(3)
+    var selectedItem by mutableIntStateOf(1)  // Inicialize com um valor de status apropriado
 
     private val _tasks = MutableLiveData<List<TaskEntity>>()
     val tasks: LiveData<List<TaskEntity>> = _tasks
 
-    @SuppressLint("MutableCollectionMutableState")
-    private val _expandedStates = mutableStateOf(mutableMapOf<Int, Boolean>())
-    val expandedStates: MutableState<MutableMap<Int, Boolean>> = _expandedStates
-
-
+    private val _searchValue = MutableLiveData<String>()
+    val searchValue: LiveData<String> = _searchValue
 
     init {
-        getAllByStatus("pending")
+        getAllByStatus("1")  // Inicialize com o status padrão
     }
 
+    fun updateSearchValue(newValue: String) {
+        _searchValue.value = newValue
+        getAllByStatusAndTitleOrDescription()  // Atualize a lista com o novo valor de pesquisa
+    }
 
     fun getAllByStatus(status: String) {
         viewModelScope.launch {
@@ -43,10 +44,20 @@ class HomeViewModel(
         }
     }
 
-    fun deleteById(id:Int){
+    fun getAllByStatusAndTitleOrDescription() {
         viewModelScope.launch {
-            repository.deleteById(id)
+            _tasks.value = repository.getAllByStatusAndTitleOrDescription(
+                selectedItem.toString(),
+                searchValue.value.orEmpty()  // Use o valor atual da pesquisa
+            )
         }
     }
 
+    fun deleteById(id: Int) {
+        viewModelScope.launch {
+            repository.deleteById(id)
+            getAllByStatus(selectedItem.toString())  // Atualize a lista após a exclusão
+        }
+    }
 }
+

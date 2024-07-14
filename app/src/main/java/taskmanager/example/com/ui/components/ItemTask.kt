@@ -15,7 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -106,7 +108,12 @@ fun BodyTask(id:Int,
             .padding(horizontal = 8.dp)
             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween ){
             Text(text = "Status")
-            Text(text = status)
+            Text(text =  when(status){
+                "1" -> "Pendente"
+                "2" -> "Em processo"
+                "3" -> "Feito"
+                else -> ""
+            })
         }
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -134,7 +141,9 @@ fun BodyTask(id:Int,
                 }
                 TextButton(onClick = {
                     viewModel.deleteById(id)
-                    viewModel.getAllByStatus(status)
+                   // viewModel.getAllByStatus(status)
+                   // viewModel.selectedItem = status.toInt()
+
                 }) {
                     Text(text = "DELETAR")
                 }
